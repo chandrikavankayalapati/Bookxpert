@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Debounce Example</title>
+  </head>
+  <body>
+    <h2>Welcome to debounce project</h2>
+    <form>
+      <input type="text" id="inputsearch" placeholder="Search for product" />
+    </form>
+
+    <script>
+      // ✅ Step 1: Debounce function
+      function debounce(func, delay) {
+        let timer;
+        return function (...args) {
+          clearTimeout(timer);
+          timer = setTimeout(() => {
+            func.apply(this, args);
+          }, delay);
+        };
+      }
+
+      // ✅ Step 2: Search logic
+      function handleSearch() {
+        const inputValue = document.getElementById("inputsearch").value;
+        console.log("Searching for:", inputValue);
+      }
+
+      // ✅ Step 3: Debounced version
+      const debouncedSearch = debounce(handleSearch, 500);
+
+      // ✅ Step 4: Event listener
+      const inputBox = document.getElementById("inputsearch");
+      inputBox.addEventListener("input", debouncedSearch);
+    </script>
+  </body>
+</html>
