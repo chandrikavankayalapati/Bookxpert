@@ -216,6 +216,21 @@ const Dashboard = () => {
         </button>
       </div>
 
+
+            {/* Loading / Error */}
+      {isLoading && (
+        <div className="flex justify-center items-center py-10">
+          <div className="h-10 w-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      )}
+
+      {isError && (
+        <p className="text-center text-red-600 font-semibold py-4">
+          Failed to load employees
+        </p>
+      )}
+
+
       {/* Table */}
       <div className="bg-white rounded-xl shadow overflow-x-auto">
         <table className="w-full text-left">
@@ -230,15 +245,32 @@ const Dashboard = () => {
               <th className="p-3">Status</th>
             </tr>
           </thead>
-
-         <tbody>
-  {filteredEmployees.length === 0 ? (
+<tbody>
+  {/* 🔄 LOADING STATE (ONLY ONE) */}
+  {isLoading && (
     <tr>
-      <td colSpan="7" className="p-6 text-center text-gray-500">
-        No employees found
+      <td colSpan="7" className="p-6 text-center">
+        <div className="flex justify-center">
+          <div className="h-8 w-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+        </div>
       </td>
     </tr>
-  ) : (
+  )}
+
+  {/* ❌ NO RESULT — ONLY AFTER SEARCH & AFTER LOADING */}
+  {!isLoading &&
+    search.trim() !== "" &&
+    filteredEmployees.length === 0 && (
+      <tr>
+        <td colSpan="7" className="p-6 text-center text-gray-500">
+          No employees found for "{search}"
+        </td>
+      </tr>
+    )}
+
+  {/* ✅ DATA */}
+  {!isLoading &&
+    filteredEmployees.length > 0 &&
     filteredEmployees.map((emp) => (
       <tr
         key={emp.id}
@@ -266,26 +298,21 @@ const Dashboard = () => {
               e.stopPropagation();
               toggleStatus(emp.id);
             }}
-            className={`status-toggle w-11 h-5 flex items-center rounded-full p-1 ${
+            className={`w-11 h-5 flex items-center rounded-full p-1 ${
               emp.isActive ? "bg-green-500" : "bg-red-400"
             }`}
           >
             <div
               className={`bg-white w-3 h-3 rounded-full transform ${
-                emp.isActive
-                  ? "translate-x-6"
-                  : "translate-x-0"
+                emp.isActive ? "translate-x-6" : "translate-x-0"
               }`}
             />
           </div>
-          <span className="status-text hidden">
-            {emp.isActive ? "ACTIVE" : "INACTIVE"}
-          </span>
         </td>
       </tr>
-    ))
-  )}
+    ))}
 </tbody>
+
 
         </table>
       </div>
