@@ -231,53 +231,62 @@ const Dashboard = () => {
             </tr>
           </thead>
 
-          <tbody>
-            {filteredEmployees.map((emp) => (
-              <tr
-                key={emp.id}
-                onClick={() => setSelectedId(emp.id)}
-                className={`border-t cursor-pointer ${
-                  selectedId === emp.id
-                    ? "bg-blue-50 border-l-4 border-blue-500"
-                    : ""
-                }`}
-              >
-                <td className="p-3">{emp.id}</td>
-                <td className="p-3">
-                  <img
-                    src={emp.profileImage}
-                    className="w-10 h-10 rounded-full"
-                  />
-                </td>
-                <td className="p-3">{emp.fullName}</td>
-                <td className="p-3">{emp.gender}</td>
-                <td className="p-3">{emp.dob}</td>
-                <td className="p-3">{emp.state}</td>
-                <td className="p-3">
-                  <div
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      toggleStatus(emp.id);
-                    }}
-                    className={`status-toggle w-11 h-5 flex items-center rounded-full p-1 ${
-                      emp.isActive ? "bg-green-500" : "bg-red-400"
-                    }`}
-                  >
-                    <div
-                      className={`bg-white w-3 h-3 rounded-full transform ${
-                        emp.isActive
-                          ? "translate-x-6"
-                          : "translate-x-0"
-                      }`}
-                    />
-                  </div>
-                  <span className="status-text hidden">
-                    {emp.isActive ? "ACTIVE" : "INACTIVE"}
-                  </span>
-                </td>
-              </tr>
-            ))}
-          </tbody>
+         <tbody>
+  {filteredEmployees.length === 0 ? (
+    <tr>
+      <td colSpan="7" className="p-6 text-center text-gray-500">
+        No employees found
+      </td>
+    </tr>
+  ) : (
+    filteredEmployees.map((emp) => (
+      <tr
+        key={emp.id}
+        onClick={() => setSelectedId(emp.id)}
+        className={`border-t cursor-pointer ${
+          selectedId === emp.id
+            ? "bg-blue-50 border-l-4 border-blue-500"
+            : ""
+        }`}
+      >
+        <td className="p-3">{emp.id}</td>
+        <td className="p-3">
+          <img
+            src={emp.profileImage}
+            className="w-10 h-10 rounded-full"
+          />
+        </td>
+        <td className="p-3">{emp.fullName}</td>
+        <td className="p-3">{emp.gender}</td>
+        <td className="p-3">{emp.dob}</td>
+        <td className="p-3">{emp.state}</td>
+        <td className="p-3">
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleStatus(emp.id);
+            }}
+            className={`status-toggle w-11 h-5 flex items-center rounded-full p-1 ${
+              emp.isActive ? "bg-green-500" : "bg-red-400"
+            }`}
+          >
+            <div
+              className={`bg-white w-3 h-3 rounded-full transform ${
+                emp.isActive
+                  ? "translate-x-6"
+                  : "translate-x-0"
+              }`}
+            />
+          </div>
+          <span className="status-text hidden">
+            {emp.isActive ? "ACTIVE" : "INACTIVE"}
+          </span>
+        </td>
+      </tr>
+    ))
+  )}
+</tbody>
+
         </table>
       </div>
 
